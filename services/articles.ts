@@ -1,4 +1,4 @@
-import type { GetArticlesParams, Article } from "~/types";
+import type { GetArticlesParams, Article, CreateArticle } from "~/types";
 
 function getAllArticles(
   params?: GetArticlesParams
@@ -8,4 +8,13 @@ function getAllArticles(
   });
 }
 
-export { getAllArticles };
+function createArticle(params: {
+  article: CreateArticle;
+}): Promise<{ article: Article }> {
+  return useCustomFetch("/api/articles", {
+    method: "POST",
+    body: params,
+  });
+}
+
+export { getAllArticles, createArticle };
