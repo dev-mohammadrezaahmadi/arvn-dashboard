@@ -49,26 +49,39 @@ const columns = [
     key: "createdAt",
     label: "Created",
   },
+  {
+    key: "actions"
+  }
 ];
+
+const items = (row: any) => [
+  [{
+    label: 'Edit',
+    icon: 'i-heroicons-pencil-square-20-solid',
+    click: () => console.log('Edit', row.id)
+  }, {
+    label: 'Delete',
+    icon: 'i-heroicons-trash-20-solid',
+    click: () => console.log('Delete', row.id)
+  }]
+]
 
 watch(currentPage, () => {
   refresh();
 });
 </script>
+
+
 <template>
-  <UTable
-    :loading="status === 'pending'"
-    :rows="data?.articles"
-    :columns="columns"
-  />
-  <div
-    class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700"
-  >
-    <UPagination
-      v-model="currentPage"
-      :page-count="PAGE_SIZE_LIMIT"
-      :total="data?.articlesCount || 0"
-    />
+  <UTable :loading="status === 'pending'" :rows="data?.articles" :columns="columns">
+    <template #actions-data="{ row }">
+      <UDropdown :items="items(row)">
+        <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+      </UDropdown>
+    </template>
+  </UTable>
+  <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
+    <UPagination v-model="currentPage" :page-count="PAGE_SIZE_LIMIT" :total="data?.articlesCount || 0" />
   </div>
 </template>
 
