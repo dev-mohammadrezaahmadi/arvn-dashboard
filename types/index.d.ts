@@ -27,3 +27,19 @@ export interface GetArticlesParams {
   limit: number;
   offset: number;
 }
+
+
+export interface User {
+  email?: string;
+  username?: string;
+  password?: string;
+}
+
+export interface UserInfo {
+  email: string;
+  token?: string;
+  username: string;
+  bio: string;
+  image?: string;
+  password?: string;
+}
