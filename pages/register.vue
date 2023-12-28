@@ -16,8 +16,10 @@
 </template>
 
 <script setup lang="ts">
-import { register } from "~/services/auth";
+import { useUserStore } from "~/stores/user";
 import type { User } from "~/types";
+
+const userStore = useUserStore()
 
 const formState = ref<User>({
   username: undefined,
@@ -27,7 +29,7 @@ const formState = ref<User>({
 
 const { status, error, execute } = useAsyncData(
   () =>
-    register({
+    userStore.register({
       user: formState.value,
     }),
   { immediate: false, server: false }
