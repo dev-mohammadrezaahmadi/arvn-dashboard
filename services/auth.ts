@@ -7,4 +7,11 @@ function register(params: { user: User }): Promise<{ user: UserInfo }> {
   });
 }
 
-export { register };
+function login(params: { user: User }): Promise<{ user: UserInfo }> {
+  return useCustomFetch("/api/users/login", {
+    method: "POST",
+    body: params,
+  });
+}
+
+export { register, login };
