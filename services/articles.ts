@@ -17,4 +17,8 @@ function createArticle(params: {
   });
 }
 
-export { getAllArticles, createArticle };
+function getTags(): Promise<{ tags: string[] }> {
+  return useCustomFetch("/api/tags");
+}
+
+export { getAllArticles, createArticle, getTags };

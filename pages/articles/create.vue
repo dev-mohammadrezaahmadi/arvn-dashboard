@@ -16,106 +16,96 @@
       <UButton type="submit">Submit</UButton>
     </UForm>
 
-    <UForm :state="tagsFormState" @submit="onTagFormSubmit">
+    <UForm :state="state" @submit="onTagFormSubmit">
       <!-- tag list -->
       <UFormGroup label="Tags" name="newTag">
         <UInput v-model="tagsFormState.newTag" placeholder="New tag" />
       </UFormGroup>
 
+
       <div class="flex flex-col gap-2">
-        <UCheckbox v-for="tag in tagsFormState.tags" v-model="tag.isActive" :label="tag.name" />
+        <UCheckbox
+          v-for="tag in state.tagList"
+          v-model="tag.isActive"
+          :label="tag.name"
+        />
       </div>
     </UForm>
+
   </div>
 </template>
 
 <script setup lang="ts">
-import { createArticle } from '~/services/articles'
-
-
-
-const tags: Tag[] = [
-  {
-    name: "tag1",
-    isActive: false,
-  },
-  {
-    name: "tag2",
-    isActive: true,
-  },
-  {
-    name: "tag3",
-    isActive: false,
-  },
-]
-
-
-
-const state = ref({
-  title: '',
-  description: '',
-  body: '',
-});
-
-const tagsFormState = ref<{
-  newTag?: string;
-  tags: Tag[];
-}>({
-  newTag: '',
-  tags: [],
-});
-
-
-const activeTags = computed(() => tagsFormState.value.tags.filter(tag => tag.isActive).map(tag => tag.name))
-
-function onTagFormSubmit() {
-  // make sure input is not empty
-  if (tagsFormState.value.newTag) {
-    tagsFormState.value.tags = [
-      ...tagsFormState.value.tags,
-      {
-        name: tagsFormState.value.newTag,
-        isActive: true,
-      },
-    ];
-  }
-
-  // clear new tag input
-  tagsFormState.value.newTag = undefined;
-}
-
-
-
-onMounted(() => {
-  tagsFormState.value.tags = [...tagsFormState.value.tags, ...tags]
-})
-
-
-
+import { createArticle, getTags } from "~/services/articles";
 interface Tag {
   name: string;
   isActive: boolean;
 }
 
+const state = ref<{
+  title: string;
+  description: string;
+  body: string;
+  tagList: Tag[];
+}>({
+  title: "",
+  description: "",
+  body: "",
+  tagList: [],
+});
 
-const { status, error, execute } = useAsyncData(
-  () => createArticle({
-    article: {
-      ...state.value,
-      tagList: activeTags.value,
+const tagsFormState = ref<{
+  newTag: string;
+}>({
+  newTag: "",
+});
 
-    }
-  }),
-  { immediate: false, server: false }
-
+const activeTags = computed(() =>
+  state.value.tagList.filter((tag) => tag.isActive)
 );
 
+function onTagFormSubmit() {
+  // make sure input is not empty
+  if (tagsFormState.value.newTag === "") {
+    return;
+  }
 
-async function onFormSubmit() {
+  state.value.tagList.push({
+    name: tagsFormState.value.newTag,
+    isActive: true,
+  });
 
-  await execute()
+  // clear new tag input
+  tagsFormState.value.newTag = "";
 }
 
+// get initial tags
+const { data } = await useAsyncData(() => getTags());
+if (data.value) {
+  // state.value.tagList = data.value.tags
+  state.value.tagList = [
+    ...state.value.tagList,
+    ...data.value.tags.map((tag) => ({ name: tag, isActive: true })),
+  ];
+}
+const sortedTags = computed(() => {
+  return state.value.tagList.sort((a, b) => a.name.localeCompare(b.name));
+});
+
+const { status, error, execute } = useAsyncData(
+  () =>
+    createArticle({
+      article: {
+        ...state.value,
+        tagList: activeTags.value.map((tag) => tag.name),
+      },
+    }),
+  { immediate: false, server: false }
+);
+
+async function onFormSubmit() {
+  await execute();
+}
 </script>
 
 <style scoped></style>
