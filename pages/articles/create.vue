@@ -1,31 +1,32 @@
 <template>
-  <div class="flex p-10">
-    <UForm class="w-1/2" :state="state" @submit="onFormSubmit">
+  <h1 class="px-5 py-5 text-5xl capitalize text-start font-bold">new aritcle</h1>
+  <div class="px-5 py-5 flex gap-6">
+    <UForm class="flex w-2/3 flex-col gap-6"  :state="state" @submit="onFormSubmit">
       <UFormGroup label="Title" name="title">
-        <UInput v-model="state.title" />
+        <UInput placeholder="Title" size="xl" v-model="state.title" />
       </UFormGroup>
 
       <UFormGroup label="Description" name="description">
-        <UInput v-model="state.description" />
+        <UInput placeholder="Description" size="xl" v-model="state.description" />
       </UFormGroup>
 
       <UFormGroup label="Body" name="body">
         <UTextarea v-model="state.body" />
       </UFormGroup>
 
-      <UButton type="submit">Submit</UButton>
+      <UButton :loading="createArticleStatus === 'pending'" class="w-fit" size="xl" color="blue" type="submit" label="Submit" />
     </UForm>
 
-    <UForm :state="state" @submit="onTagFormSubmit">
+    <UForm class="w-1/3" :state="state" @submit="onTagFormSubmit">
       <!-- tag list -->
       <UFormGroup label="Tags" name="newTag">
-        <UInput v-model="tagsFormState.newTag" placeholder="New tag" />
+        <UInput size="xl" v-model="tagsFormState.newTag" placeholder="New tag" />
       </UFormGroup>
 
 
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-2 mt-6">
         <UCheckbox
-          v-for="tag in state.tagList"
+          v-for="tag in sortedTags"
           v-model="tag.isActive"
           :label="tag.name"
         />
@@ -41,6 +42,9 @@ interface Tag {
   name: string;
   isActive: boolean;
 }
+
+const toast = useToast()
+const router = useRouter()
 
 const state = ref<{
   title: string;
@@ -92,7 +96,7 @@ const sortedTags = computed(() => {
   return state.value.tagList.sort((a, b) => a.name.localeCompare(b.name));
 });
 
-const { status, error, execute } = useAsyncData(
+const { status: createArticleStatus, error, execute } = useAsyncData(
   () =>
     createArticle({
       article: {
@@ -105,6 +109,21 @@ const { status, error, execute } = useAsyncData(
 
 async function onFormSubmit() {
   await execute();
+  if (createArticleStatus.value === "pending") {
+  } else if (createArticleStatus.value === "error") {
+    toast.add({
+      title: error.value?.cause as string,
+      color: "red",
+      icon: "i-heroicons-x-circle-solid",
+    });
+  } else if (createArticleStatus.value === "success") {
+    toast.add({
+      title: "Article created successfuly",
+      color: "green",
+      icon: "i-heroicons-check-solid",
+    });
+    router.push("/");
+  }
 }
 </script>
 
