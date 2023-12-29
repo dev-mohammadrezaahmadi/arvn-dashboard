@@ -1,7 +1,10 @@
 <template>
-  <h1 class="px-5 py-5 text-5xl capitalize text-start font-bold">new aritcle</h1>
+  <h1 class="px-5 py-5 text-5xl capitalize text-start font-bold">
+    new aritcle
+  </h1>
   <div class="px-5 py-5 flex flex-col sm:flex-row gap-6">
-    <UForm class="flex w-full sm:w-2/3 flex-col gap-6 order-2 sm:order-1"  :state="state" @submit="onFormSubmit">
+    <UForm :schema="schema" class="flex w-full sm:w-2/3 flex-col gap-6 order-2 sm:order-1" :state="state"
+      @submit="onFormSubmit">
       <UFormGroup label="Title" name="title">
         <UInput placeholder="Title" size="xl" v-model="state.title" />
       </UFormGroup>
@@ -14,7 +17,8 @@
         <UTextarea resize :rows="10" v-model="state.body" />
       </UFormGroup>
 
-      <UButton :loading="createArticleStatus === 'pending'" class="w-full sm:w-fit justify-center" size="xl" color="blue" type="submit" label="Submit" />
+      <UButton :loading="createArticleStatus === 'pending'" class="w-full sm:w-fit justify-center" size="xl" color="blue"
+        type="submit" label="Submit" />
     </UForm>
 
     <UForm class="w-full sm:w-1/3 order-1 sm:order-2" :state="state" @submit="onTagFormSubmit">
@@ -23,16 +27,10 @@
         <UInput size="xl" v-model="tagsFormState.newTag" placeholder="New tag" />
       </UFormGroup>
 
-
       <div class="flex flex-col gap-2 mt-6 border border-gray-300 rounded p-4">
-        <UCheckbox
-          v-for="tag in sortedTags"
-          v-model="tag.isActive"
-          :label="tag.name"
-        />
+        <UCheckbox v-for="tag in sortedTags" v-model="tag.isActive" :label="tag.name" />
       </div>
     </UForm>
-
   </div>
 </template>
 
@@ -42,13 +40,20 @@ interface Tag {
   name: string;
   isActive: boolean;
 }
+import { z } from "zod";
 
 definePageMeta({
   middleware: ["02-need-auth"],
 });
 
-const toast = useToast()
-const router = useRouter()
+const toast = useToast();
+const router = useRouter();
+
+const schema = z.object({
+  title: z.string().min(1, { message: 'Title is required' }),
+  description: z.string().min(1, { message: 'Description is required' }),
+  body: z.string().min(1, { message: 'Body is required' }),
+});
 
 const state = ref<{
   title: string;
@@ -100,7 +105,11 @@ const sortedTags = computed(() => {
   return state.value.tagList.sort((a, b) => a.name.localeCompare(b.name));
 });
 
-const { status: createArticleStatus, error, execute } = useAsyncData(
+const {
+  status: createArticleStatus,
+  error,
+  execute,
+} = useAsyncData(
   () =>
     createArticle({
       article: {

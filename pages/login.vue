@@ -4,7 +4,7 @@
       <template #header>
         <h1 class="text-5xl capitalize text-center font-bold">login</h1>
       </template>
-      <UForm class="flex flex-col gap-6" :state="formState" @submit="onSubmit">
+      <UForm :schema="schema" class="flex flex-col gap-6" :state="formState" @submit="onSubmit">
         <UFormGroup label="Email" name="email">
           <UInput size="xl" v-model="formState.email" type="email" />
         </UFormGroup>
@@ -27,10 +27,13 @@
 <script setup lang="ts">
 import { useUserStore } from "~/stores/user";
 import type { User } from "~/types";
+import { z } from 'zod'
 
 definePageMeta({
   layout: false,
 });
+
+
 
 const cardUi = {
   base: "overflow-hidden h-screen sm:h-fit",
@@ -55,6 +58,14 @@ const cardUi = {
     padding: "px-6 py-5 -mt-6 sm:px-6",
   },
 };
+
+
+const schema = z.object({
+  email: z.string().email("Invalid email!"),
+  password: z.string().min(6, "Must be at least 6 characters!")  
+})
+
+
 
 const userStore = useUserStore();
 const toast = useToast();

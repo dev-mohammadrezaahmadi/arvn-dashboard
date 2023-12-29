@@ -4,7 +4,7 @@
       <template #header>
         <h1 class="text-5xl capitalize text-center font-bold">Register</h1>
       </template>
-      <UForm class="flex flex-col gap-6" :state="formState" @submit="onSubmit">
+      <UForm :schema="schema" class="flex flex-col gap-6" :state="formState" @submit="onSubmit">
         <UFormGroup label="User" name="username">
           <UInput size="xl" v-model="formState.username" />
         </UFormGroup>
@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import { useUserStore } from "~/stores/user";
 import type { User } from "~/types";
+import { z } from 'zod'
 
 
 definePageMeta({
@@ -64,6 +65,12 @@ const cardUi = {
 const userStore = useUserStore();
 const toast = useToast();
 const router = useRouter();
+
+const schema = z.object({
+  username: z.string().min(6, 'username must be at least 6 characters!'),
+  email: z.string().email("Invalid email!"),
+  password: z.string().min(6, "Must be at least 6 characters!")  
+})
 
 const formState = ref<User>({
   username: undefined,

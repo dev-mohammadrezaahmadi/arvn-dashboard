@@ -2,7 +2,7 @@
   <h1 class="px-5 py-5 text-5xl capitalize text-start font-bold">edit article</h1>
 
   <div class="px-5 py-5 flex flex-col sm:flex-row gap-6">
-    <UForm class="flex w-full sm:w-2/3 flex-col gap-6 order-2 sm:order-1" :state="state" @submit="onFormSubmit">
+    <UForm :schema="schema" class="flex w-full sm:w-2/3 flex-col gap-6 order-2 sm:order-1" :state="state" @submit="onFormSubmit">
       <UFormGroup label="Title" name="title">
         <UInput size="xl" placeholder="Title" v-model="state.title" />
       </UFormGroup>
@@ -33,6 +33,7 @@
 
 <script setup lang="ts">
 import { updateArticle, getTags, getArticle } from "~/services/articles";
+import { z } from 'zod'
 interface Tag {
   name: string;
   isActive: boolean;
@@ -54,6 +55,12 @@ const {
   error: fetchedArticleError,
 } = await useAsyncData(() => getArticle(aritcleId.value), {
   server: false,
+});
+
+const schema = z.object({
+  title: z.string().min(1, { message: 'Title is required' }),
+  description: z.string().min(1, { message: 'Description is required' }),
+  body: z.string().min(1, { message: 'Body is required' }),
 });
 
 const state = ref<{
