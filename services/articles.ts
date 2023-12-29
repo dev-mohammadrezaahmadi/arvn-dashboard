@@ -21,4 +21,10 @@ function getTags(): Promise<{ tags: string[] }> {
   return useCustomFetch("/api/tags");
 }
 
-export { getAllArticles, createArticle, getTags };
+function deleteArticle(slug: string): Promise<any> {
+  return useCustomFetch(`/api/articles/${slug}`, {
+    method: "DELETE",
+  });
+}
+
+export { getAllArticles, createArticle, getTags, deleteArticle };
