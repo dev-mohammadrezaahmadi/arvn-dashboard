@@ -38,6 +38,10 @@ interface Tag {
   isActive: boolean;
 }
 
+definePageMeta({
+  middleware: ["02-need-auth"],
+});
+
 const route = useRoute();
 const router = useRouter();
 const toast = useToast();
@@ -136,7 +140,7 @@ async function onFormSubmit() {
       color: "green",
       icon: "i-heroicons-check-solid",
     });
-    router.push("/");
+    router.push("/articles");
   }
 }
 </script>

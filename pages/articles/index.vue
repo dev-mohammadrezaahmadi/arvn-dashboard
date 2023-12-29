@@ -4,6 +4,10 @@ import { getAllArticles, deleteArticle } from "~/services/articles";
 import { ref } from "vue";
 import type { Article } from "~/types";
 
+definePageMeta({
+  middleware: ["02-need-auth"],
+});
+
 const router = useRouter();
 
 const currentPage = ref(1);

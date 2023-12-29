@@ -88,7 +88,7 @@ async function onSubmit() {
       color: "green",
       icon: "i-heroicons-check-solid",
     });
-    router.push("/");
+    router.push("/articles");
   }
 }
 </script>
