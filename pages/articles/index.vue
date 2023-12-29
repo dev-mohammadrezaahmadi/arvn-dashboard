@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { PAGE_SIZE_LIMIT } from "~/constants/global";
 import { getAllArticles, deleteArticle } from "~/services/articles";
+import { useUserStore } from '~/stores/user';
 import { ref } from "vue";
 import type { Article } from "~/types";
 
 definePageMeta({
   middleware: ["02-need-auth"],
 });
+
+
+const userStore = useUserStore()
 
 const router = useRouter();
 
@@ -144,8 +148,8 @@ watch(currentPage, () => {
           }}</span>
         </template>
         <template #actions-data="{ row }">
-          <UDropdown :items="items(row)">
-            <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+          <UDropdown  :items="items(row)">
+            <UButton :disabled="row.author.username !== userStore.currentUser?.username" color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
           </UDropdown>
         </template>
       </UTable>
