@@ -1,8 +1,9 @@
 <template>
   <div class="h-screen w-screen flex flex-col">
     <Topbar />
+    <MobileViewNavbar class="flex w-full sm:hidden" />
     <div class="flex h-full">
-        <LeftNavbar class="min-w-[250px] " />
+        <LeftNavbar class="hidden sm:block min-w-[250px] " />
         <main class="flex-grow overflow-hidden">
           <slot></slot>
         </main>
