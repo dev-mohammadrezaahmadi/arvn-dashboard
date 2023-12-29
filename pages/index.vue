@@ -4,6 +4,8 @@ import { getAllArticles, deleteArticle } from "~/services/articles";
 import { ref } from "vue";
 import type { Article } from "~/types";
 
+const router = useRouter()
+
 const currentPage = ref(1);
 const { error, status, data, refresh } = await useAsyncData(
   "articles",
@@ -59,7 +61,10 @@ const items = (row: any) => [
     {
       label: "Edit",
       icon: "i-heroicons-pencil-square-20-solid",
-      click: () => console.log("Edit", row.slug),
+      click: () => {
+        setSelectedArticleId(row.slug);
+        goToUpdateArticlePage(row.slug)
+      },
     },
     {
       label: "Delete",
@@ -72,7 +77,10 @@ const items = (row: any) => [
   ],
 ];
 
-const {status: deleteAritcleStatus, execute} = await useAsyncData(() => deleteArticle(selectedArticleId.value as string), {server: false})
+const { status: deleteAritcleStatus, execute } = await useAsyncData(
+  () => deleteArticle(selectedArticleId.value as string),
+  { server: false }
+);
 
 const selectedArticleId = ref<string | undefined>();
 function setSelectedArticleId(id: string) {
@@ -80,12 +88,16 @@ function setSelectedArticleId(id: string) {
 }
 const toast = useToast();
 async function handleDeleteArticle() {
-  await execute()
-  if (deleteAritcleStatus.value === 'success') {
+  await execute();
+  if (deleteAritcleStatus.value === "success") {
     toast.add({ title: "article deleted successfuly", color: "red", icon: "" });
   }
-  toggleDeleteArticleModal()
-  await refresh()
+  toggleDeleteArticleModal();
+  await refresh();
+}
+
+function goToUpdateArticlePage(slug: string) {
+  router.push(`/articles/edit/${slug}`)
 }
 
 const isOpen = ref(false);
@@ -93,6 +105,7 @@ const isOpen = ref(false);
 function toggleDeleteArticleModal() {
   isOpen.value = !isOpen.value;
 }
+
 
 watch(currentPage, () => {
   refresh();
