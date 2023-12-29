@@ -1,9 +1,9 @@
 <template>
-  <div class="sm:h-screen sm:overflow-hidden">
+  <div class="h-screen w-screen flex flex-col">
     <Topbar />
-    <div class="w-full h-full flex">
-        <LeftNavbar class="min-w-[250px] h-full" />
-        <main class="grow">
+    <div class="flex h-full">
+        <LeftNavbar class="min-w-[250px] " />
+        <main class="flex-grow overflow-hidden">
           <slot></slot>
         </main>
     </div>

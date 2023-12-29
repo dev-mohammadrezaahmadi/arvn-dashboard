@@ -113,40 +113,42 @@ watch(currentPage, () => {
 <template>
   <div class="w-full">
     <h1 class="px-5 py-5 text-5xl capitalize text-start font-bold">all post</h1>
-<div class="p-5">
-  <UTable class="w-full border rounded-md shadow" :loading="status === 'pending'" :rows="data?.articles" :columns="columns">
-      <template #title-data="{ row }">
-        <span>{{ row.title.slice(0, 20) + "..." }}</span>
-      </template>
-      <template #author-data="{ row }">
-        <span>{{ row.author.username }}</span>
-      </template>
-      <template #tagList-data="{ row }">
-        <span>{{
-          row.tagList.length > 3
-          ? row.tagList.slice(0, 3).join(", ") + "..."
-          : row.tagList.join(", ")
-        }}</span>
-      </template>
-      <template #description-data="{ row }">
-        <span class="line-clamp-1">{{
-          row.description.slice(0, 40) + "..."
-        }}</span>
-      </template>
-      <template #createdAt-data="{ row }">
-        <span>{{
-          Intl.DateTimeFormat("en-US").format(new Date(row.createdAt))
-        }}</span>
-      </template>
-      <template #actions-data="{ row }">
-        <UDropdown :items="items(row)">
-          <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
-        </UDropdown>
-      </template>
-    </UTable>
-</div>
-    <div class="flex w-full justify-center p-5">
-      <UPagination :disable="status === 'pending'" v-model="currentPage" :page-count="PAGE_SIZE_LIMIT" :total="data?.articlesCount || 0" />
+    <div class="p-5">
+      <UTable class="w-full border rounded-md shadow min-h-[580px]" :loading="status === 'pending'" :rows="data?.articles"
+        :columns="columns">
+        <template #title-data="{ row }">
+          <span>{{ row.title.slice(0, 20) + "..." }}</span>
+        </template>
+        <template #author-data="{ row }">
+          <span>{{ row.author.username }}</span>
+        </template>
+        <template #tagList-data="{ row }">
+          <span>{{
+            row.tagList.length > 3
+            ? row.tagList.slice(0, 3).join(", ") + "..."
+            : row.tagList.join(", ")
+          }}</span>
+        </template>
+        <template #description-data="{ row }">
+          <span class="line-clamp-1">{{
+            row.description.slice(0, 40) + "..."
+          }}</span>
+        </template>
+        <template #createdAt-data="{ row }">
+          <span>{{
+            Intl.DateTimeFormat("en-US").format(new Date(row.createdAt))
+          }}</span>
+        </template>
+        <template #actions-data="{ row }">
+          <UDropdown :items="items(row)">
+            <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+          </UDropdown>
+        </template>
+      </UTable>
+    </div>
+    <div class="flex w-full justify-center items-center">
+      <UPagination  v-model="currentPage" :page-count="PAGE_SIZE_LIMIT"
+        :total="data?.articlesCount || 0" />
     </div>
     <UModal v-model="isOpen" prevent-close>
       <UCard :ui="{
