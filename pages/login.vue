@@ -11,15 +11,7 @@
         <UFormGroup label="Password" name="password">
           <UInput size="xl" v-model="formState.password" type="password" />
         </UFormGroup>
-        <UButton
-          block
-          :loading="status === 'pending'"
-          class="mt-6"
-          size="xl"
-          color="blue"
-          type="submit"
-          label="Login"
-        />
+        <UButton block :loading="status === 'pending'" class="mt-6" size="xl" color="blue" type="submit" label="Login" />
       </UForm>
       <template #footer>
         <span>Don't have account?</span>
