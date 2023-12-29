@@ -32,6 +32,11 @@
 import { useUserStore } from "~/stores/user";
 import type { User } from "~/types";
 
+
+definePageMeta({
+  layout: false,
+});
+
 const cardUi = {
   base: "overflow-hidden h-screen sm:h-fit",
   background: "bg-white dark:bg-gray-900",
