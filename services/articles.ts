@@ -27,4 +27,8 @@ function deleteArticle(slug: string): Promise<any> {
   });
 }
 
-export { getAllArticles, createArticle, getTags, deleteArticle };
+function getArticle(slug: string): Promise<{ article: Article }> {
+  return useCustomFetch(`/api/articles/${slug}`);
+}
+
+export { getAllArticles, createArticle, getTags, deleteArticle, getArticle };
