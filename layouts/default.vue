@@ -1,9 +1,13 @@
 <template>
-  <div class="w-full h-screen flex">
-      <LeftNavbar class="min-w-[250px]" />
-      <main class="grow">
-        <slot></slot>
-      </main>
+  <div class="sm:h-screen sm:overflow-hidden">
+    <Topbar />
+    <div class="w-full h-full flex">
+        <LeftNavbar class="min-w-[250px] h-full" />
+        <main class="grow">
+          <slot></slot>
+        </main>
+    </div>
+
   </div>
 </template>
 

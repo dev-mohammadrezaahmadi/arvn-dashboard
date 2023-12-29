@@ -25,6 +25,7 @@ export const useUserStore = defineStore("user", () => {
   return {
     register,
     login,
-    isLoggedIn
+    isLoggedIn,
+    currentUser
   };
 });
