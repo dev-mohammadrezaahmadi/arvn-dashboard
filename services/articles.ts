@@ -17,6 +17,13 @@ function createArticle(params: {
   });
 }
 
+function updateArticle(params: { slug: string; article: CreateArticle }) {
+  return useCustomFetch(`/api/articles/${params.slug}`, {
+    method: "PUT",
+    body: { article: params.article },
+  });
+}
+
 function getTags(): Promise<{ tags: string[] }> {
   return useCustomFetch("/api/tags");
 }
@@ -27,4 +34,8 @@ function deleteArticle(slug: string): Promise<any> {
   });
 }
 
-export { getAllArticles, createArticle, getTags, deleteArticle };
+function getArticle(slug: string): Promise<{ article: Article }> {
+  return useCustomFetch(`/api/articles/${slug}`);
+}
+
+export { getAllArticles, createArticle, getTags, deleteArticle, getArticle, updateArticle };
