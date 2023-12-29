@@ -14,4 +14,8 @@ function login(params: { user: User }): Promise<{ user: UserInfo }> {
   });
 }
 
-export { register, login };
+function getUserInfo(): Promise<{ user: UserInfo }> {
+  return useCustomFetch("/api/user");
+}
+
+export { register, login, getUserInfo };

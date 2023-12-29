@@ -22,10 +22,16 @@ export const useUserStore = defineStore("user", () => {
     setUserInfo(data.user);
   }
 
+  async function getUserInfo() {
+    const data = await AuthService.getUserInfo();
+    setUserInfo(data.user);
+  }
+
   return {
     register,
     login,
     isLoggedIn,
-    currentUser
+    currentUser,
+    getUserInfo
   };
 });
