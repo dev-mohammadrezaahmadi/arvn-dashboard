@@ -1,7 +1,7 @@
 <template>
   <h1 class="px-5 py-5 text-5xl capitalize text-start font-bold">new aritcle</h1>
-  <div class="px-5 py-5 flex gap-6">
-    <UForm class="flex w-2/3 flex-col gap-6"  :state="state" @submit="onFormSubmit">
+  <div class="px-5 py-5 flex flex-col sm:flex-row gap-6">
+    <UForm class="flex w-full sm:w-2/3 flex-col gap-6 order-2 sm:order-1"  :state="state" @submit="onFormSubmit">
       <UFormGroup label="Title" name="title">
         <UInput placeholder="Title" size="xl" v-model="state.title" />
       </UFormGroup>
@@ -11,20 +11,20 @@
       </UFormGroup>
 
       <UFormGroup label="Body" name="body">
-        <UTextarea v-model="state.body" />
+        <UTextarea resize :rows="10" v-model="state.body" />
       </UFormGroup>
 
-      <UButton :loading="createArticleStatus === 'pending'" class="w-fit" size="xl" color="blue" type="submit" label="Submit" />
+      <UButton :loading="createArticleStatus === 'pending'" class="w-full sm:w-fit justify-center" size="xl" color="blue" type="submit" label="Submit" />
     </UForm>
 
-    <UForm class="w-1/3" :state="state" @submit="onTagFormSubmit">
+    <UForm class="w-full sm:w-1/3 order-1 sm:order-2" :state="state" @submit="onTagFormSubmit">
       <!-- tag list -->
       <UFormGroup label="Tags" name="newTag">
         <UInput size="xl" v-model="tagsFormState.newTag" placeholder="New tag" />
       </UFormGroup>
 
 
-      <div class="flex flex-col gap-2 mt-6">
+      <div class="flex flex-col gap-2 mt-6 border border-gray-300 rounded p-4">
         <UCheckbox
           v-for="tag in sortedTags"
           v-model="tag.isActive"
