@@ -2,5 +2,8 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
-  modules: ['@nuxt/ui', "@pinia/nuxt"]
-})
+  modules: ["@nuxt/ui", "@pinia/nuxt"],
+  routeRules: {
+    "/": { redirect: "/login" },
+  },
+});
