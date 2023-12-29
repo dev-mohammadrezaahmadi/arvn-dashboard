@@ -27,11 +27,17 @@ export const useUserStore = defineStore("user", () => {
     setUserInfo(data.user);
   }
 
+  function logout() {
+    currentUser.value = null;
+    token.value = "";
+  }
+
   return {
     register,
     login,
     isLoggedIn,
     currentUser,
-    getUserInfo
+    getUserInfo,
+    logout
   };
 });
