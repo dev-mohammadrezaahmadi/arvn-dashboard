@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen w-screen flex flex-col">
+  <div class="sm:h-screen w-screen flex flex-col">
     <Topbar />
     <MobileViewNavbar class="flex w-full sm:hidden" />
     <div class="flex h-full">
