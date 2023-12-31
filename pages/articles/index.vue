@@ -97,7 +97,7 @@ const toast = useToast();
 async function handleDeleteArticle() {
   await execute();
   if (deleteAritcleStatus.value === "success") {
-    toast.add({ title: "article deleted successfuly", color: "red", icon: "" });
+    toast.add({ title: "Article deleted successfuly", color: "green", icon: "i-heroicons-check-solid" });
   }
   toggleDeleteArticleModal();
   await refresh();
@@ -154,7 +154,7 @@ watch(currentPage, () => {
         </template>
       </UTable>
     </div>
-    <div class="flex w-full justify-center items-center">
+    <div class="flex w-full justify-center items-center mb-6">
       <UPagination  v-model="currentPage" :page-count="PAGE_SIZE_LIMIT"
         :total="data?.articlesCount || 0" />
     </div>
@@ -165,8 +165,8 @@ watch(currentPage, () => {
       }">
         <template #header>
           <div class="flex items-center justify-between">
-            <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
-              Modal
+            <h3 class="text-base capitalize font-semibold leading-6 text-gray-900 dark:text-white">
+              delete article
             </h3>
             <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
               @click="isOpen = false" />
@@ -176,9 +176,9 @@ watch(currentPage, () => {
         <p>Are you sure to delete article?</p>
 
         <template #footer>
-          <div class="flex justify-end gap-4">
-            <UButton @click="toggleDeleteArticleModal" color="gray" variant="solid" label="No" />
-            <UButton @click="handleDeleteArticle" color="red" variant="solid" label="Yes"
+          <div class="flex justify-end gap-2">
+            <UButton class="px-4" @click="toggleDeleteArticleModal" color="gray" variant="solid" label="No" />
+            <UButton class="px-4" @click="handleDeleteArticle" color="red" variant="solid" label="Yes"
               :loading="deleteAritcleStatus === 'pending'" />
           </div>
         </template>

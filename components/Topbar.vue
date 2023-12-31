@@ -11,7 +11,7 @@ function handleLogout() {
 </script>
 
 <template>
-    <div class="topbar bg-gray-500 flex justify-between items-center p-4 text-white">
+    <div class="topbar bg-gray-400 flex justify-between items-center p-4 text-white">
         <div class="flex items-baseline">
             <p class="capitalize text-2xl hidden sm:block">arvan challenge</p>
             <p class="ml-4 capitalize">
